@@ -42,8 +42,15 @@ func (t Type[T]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(t.value) // TODO: performance improvement
 }
 
-func (t *Type[T]) Scan(src any) error {
-	return database_sql__convertAssign(&t.value, src)
+func (t *Type[T]) Scan(value any) error {
+	if value == nil {
+		var z T
+		t.value = z
+		t.Valid = false
+		return nil
+	}
+	t.Valid = true
+	return database_sql__convertAssign(&t.value, value)
 }
 
 func (t Type[T]) Value() (driver.Value, error) {
