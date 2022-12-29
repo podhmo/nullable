@@ -27,6 +27,7 @@ type Type[T constraint] struct {
 	Valid bool
 }
 
+// for encoding/json.Unmarshaler
 func (t *Type[T]) UnmarshalJSON(b []byte) error {
 	if b == nil || bytes.Equal(nullValue, b) {
 		return nil
@@ -35,6 +36,7 @@ func (t *Type[T]) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, &t.value) // TODO:performance improvement
 }
 
+// for encoding/json.Marshaler
 func (t Type[T]) MarshalJSON() ([]byte, error) {
 	if !t.Valid {
 		return nullValue, nil
@@ -42,6 +44,7 @@ func (t Type[T]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(t.value) // TODO: performance improvement
 }
 
+// for database/sql.Scanner
 func (t *Type[T]) Scan(value any) error {
 	if value == nil {
 		var z T
@@ -53,6 +56,7 @@ func (t *Type[T]) Scan(value any) error {
 	return database_sql__convertAssign(&t.value, value)
 }
 
+// for database/sql/driver.Valuer
 func (t Type[T]) Value() (driver.Value, error) {
 	if !t.Valid {
 		return nil, nil
