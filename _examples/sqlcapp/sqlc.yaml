@@ -1,3 +1,4 @@
+# see: https://docs.sqlc.dev/en/stable/reference/config.html
 version: "2"
 sql:
   - engine: "postgresql"
@@ -7,3 +8,16 @@ sql:
       go:
         package: "tutorial"
         out: "tutorial"
+        emit_json_tags: true
+        json_tags_case_style: none
+        emit_db_tags: true
+        emit_exact_table_names: false
+        emit_empty_slices: true
+        emit_enum_valid_method: true
+        emit_all_enum_values: true
+        overrides:
+          - go_type:
+              import: github.com/podhmo/nullable
+              type: Type[string]
+            db_type: text
+            nullable: true

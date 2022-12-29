@@ -5,11 +5,11 @@
 package tutorial
 
 import (
-	"database/sql"
+	"github.com/podhmo/nullable"
 )
 
 type Author struct {
-	ID   int64
-	Name string
-	Bio  sql.NullString
+	ID   int64                 `db:"id" json:"id"`
+	Name string                `db:"name" json:"name"`
+	Bio  nullable.Type[string] `db:"bio" json:"bio"`
 }
