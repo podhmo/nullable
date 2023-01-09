@@ -30,6 +30,7 @@ type Type[T constraint] struct {
 // for encoding/json.Unmarshaler
 func (t *Type[T]) UnmarshalJSON(b []byte) error {
 	if b == nil || bytes.Equal(nullValue, b) {
+		t.Valid = false
 		return nil
 	}
 	t.Valid = true
